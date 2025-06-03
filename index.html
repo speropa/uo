@@ -4,30 +4,28 @@
   <meta charset="UTF-8">
   <title>Akses Ujian</title>
   <script>
-    // Fungsi untuk cek user-agent
+    // Fungsi untuk cek apakah user-agent berasal dari aplikasi Exambro
     function isAllowedApp() {
       const ua = navigator.userAgent.toLowerCase();
-
-      // Ganti 'examdam' dengan bagian dari user-agent aplikasi yang benar jika kamu tahu
-      // Saat ini contoh saja, 'examdam' dianggap sebagai keyword user-agent aplikasi Android
-      return ua.includes("examdam");
+      return ua.includes("cbt-exam-browser");
     }
 
     window.onload = function() {
       if (isAllowedApp()) {
-        // Redirect ke situs jika user-agent cocok
+        // Redirect ke halaman ujian jika user-agent cocok
         window.location.href = "https://exam2.digimandiri.id";
       } else {
-        // Tampilkan pesan jika bukan dari aplikasi
+        // Tampilkan pesan jika akses tidak sah
         document.body.innerHTML = `
           <h2>Akses Ditolak</h2>
-          <p>Silakan buka halaman ini melalui aplikasi ujian resmi (Examdam).</p>
+          <p>Silakan buka halaman ini melalui aplikasi resmi <strong>CBT Exam Browser (Exambro)</strong>.</p>
+          <p>User-Agent Anda: <code>${navigator.userAgent}</code></p>
         `;
       }
     };
   </script>
 </head>
 <body>
-  <p>Memeriksa perangkat...</p>
+  <p>Memeriksa perangkat dan aplikasi...</p>
 </body>
 </html>

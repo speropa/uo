@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Akses Terbatas</title>
+<style>
+  body { font-family: sans-serif; text-align: center; }
+  #warning {
+    color: red;
+    font-size: larger;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div id="app-content" style="display: none;">
+  <p>Selamat datang di aplikasi EXAMDAM!</p>
+  <button onclick="window.location.href='https://exam2.digimandiri.id'">Lanjutkan ke Ujian</button>
+</div>
+
+<p id="warning">Link ini hanya bisa diakses melalui aplikasi EXAMDAM!</p>
+
+<script>
+  const appContent = document.getElementById('app-content');
+  const warning = document.getElementById('warning');
+  const expectedUserAgent = 'EXAMDAM_APP'; // Contoh User-Agent dari aplikasi Anda
+
+  // Periksa apakah User-Agent mengandung string yang diharapkan
+  if (navigator.userAgent.includes(expectedUserAgent)) {
+    appContent.style.display = 'block';
+    warning.style.display = 'none';
+  } else {
+    appContent.style.display = 'none';
+    warning.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

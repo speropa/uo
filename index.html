@@ -4,62 +4,47 @@
   <meta charset="UTF-8">
   <title>Akses Ujian</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 2em;
-      background-color: #f4f4f4;
-      text-align: center;
-    }
-    button {
-      margin-top: 1em;
-      padding: 10px 20px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    code {
-      background: #eee;
-      padding: 5px;
-      display: block;
-      margin-top: 10px;
-      word-break: break-all;
-    }
+    body { font-family: sans-serif; text-align: center; padding: 2em; background: #f8f8f8; }
+    button { margin-top: 1em; padding: 10px 20px; font-size: 1em; }
+    code { background: #eee; padding: 5px; display: block; margin-top: 10px; word-break: break-all; }
   </style>
   <script>
-    // Fungsi untuk mengecek apakah user menggunakan Exambro
-    function isAllowedApp() {
-      const ua = navigator.userAgent.toLowerCase();
-      return ua.includes("exambro-for-android");
+    function isLikelyWebView() {
+      const ua = navigator.userAgent || "";
+      const isAndroidWebView = ua.includes("wv") || ua.includes("; wv") || ua.includes("version/4.0");
+      const isNotDesktop = !ua.includes("windows") && !ua.includes("macintosh");
+      return isAndroidWebView && isNotDesktop;
     }
 
-    // Fungsi untuk menyalin user-agent ke clipboard
     function copyUserAgent() {
-      const uaText = navigator.userAgent;
-      navigator.clipboard.writeText(uaText).then(() => {
+      const ua = navigator.userAgent;
+      navigator.clipboard.writeText(ua).then(() => {
         alert("User-Agent berhasil disalin!");
-      }).catch(err => {
-        alert("Gagal menyalin User-Agent: " + err);
+      }).catch(() => {
+        alert("Gagal menyalin User-Agent");
       });
     }
 
     window.onload = function() {
-      if (isAllowedApp()) {
-        // Redirect jika user-agent cocok
+      if (isLikelyWebView()) {
+        // Redirect jika kemungkinan besar dari WebView (seperti Exambro)
         window.location.href = "https://exam2.digimandiri.id";
       } else {
-        // Tampilkan pesan akses ditolak & tombol salin
+        // Tampilkan pesan jika kemungkinan bukan WebView
         const ua = navigator.userAgent;
         document.body.innerHTML = `
           <h2>Akses Ditolak</h2>
-          <p>Silakan buka halaman ini melalui aplikasi resmi <strong>CBT Exam Browser (Exambro)</strong>.</p>
-          <p>User-Agent Anda:</p>
-          <code id="userAgent">${ua}</code>
+          <p>Silakan buka halaman ini melalui aplikasi ujian resmi.</p>
+          <p><strong>User-Agent Anda:</strong></p>
+          <code>${ua}</code>
           <button onclick="copyUserAgent()">Salin User-Agent Anda</button>
+          <p>Kirim user-agent ini ke admin jika Anda merasa ini kesalahan.</p>
         `;
       }
     };
   </script>
 </head>
 <body>
-  <p>Memeriksa perangkat dan aplikasi...</p>
+  <p>Memeriksa perangkat...</p>
 </body>
 </html>

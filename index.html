@@ -1,39 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>Akses Terbatas</title>
-<style>
-  body { font-family: sans-serif; text-align: center; }
-  #warning {
-    color: red;
-    font-size: larger;
-    margin-top: 20px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Akses Ujian</title>
+  <script>
+    // Fungsi untuk cek user-agent
+    function isAllowedApp() {
+      const ua = navigator.userAgent.toLowerCase();
+
+      // Ganti 'examdam' dengan bagian dari user-agent aplikasi yang benar jika kamu tahu
+      // Saat ini contoh saja, 'examdam' dianggap sebagai keyword user-agent aplikasi Android
+      return ua.includes("examdam");
+    }
+
+    window.onload = function() {
+      if (isAllowedApp()) {
+        // Redirect ke situs jika user-agent cocok
+        window.location.href = "https://exam2.digimandiri.id";
+      } else {
+        // Tampilkan pesan jika bukan dari aplikasi
+        document.body.innerHTML = `
+          <h2>Akses Ditolak</h2>
+          <p>Silakan buka halaman ini melalui aplikasi ujian resmi (Examdam).</p>
+        `;
+      }
+    };
+  </script>
 </head>
 <body>
-
-<div id="app-content" style="display: none;">
-  <p>Selamat datang di aplikasi EXAMDAM!</p>
-  <button onclick="window.location.href='https://exam2.digimandiri.id'">Lanjutkan ke Ujian</button>
-</div>
-
-<p id="warning">Link ini hanya bisa diakses melalui aplikasi EXAMDAM!</p>
-
-<script>
-  const appContent = document.getElementById('app-content');
-  const warning = document.getElementById('warning');
-  const expectedUserAgent = 'EXAMDAM_APP'; // Contoh User-Agent dari aplikasi Anda
-
-  // Periksa apakah User-Agent mengandung string yang diharapkan
-  if (navigator.userAgent.includes(expectedUserAgent)) {
-    appContent.style.display = 'block';
-    warning.style.display = 'none';
-  } else {
-    appContent.style.display = 'none';
-    warning.style.display = 'block';
-  }
-</script>
-
+  <p>Memeriksa perangkat...</p>
 </body>
 </html>

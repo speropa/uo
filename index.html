@@ -4,9 +4,28 @@
   <meta charset="UTF-8">
   <title>Akses Ujian</title>
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 2em; background: #f8f8f8; }
-    button { margin-top: 1em; padding: 10px 20px; font-size: 1em; }
-    code { background: #eee; padding: 5px; display: block; margin-top: 10px; word-break: break-all; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      padding: 1em;
+    }
+    h1 {
+      color: red;
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+      text-transform: uppercase;
+    }
+    p {
+      font-size: 1.2em;
+      max-width: 500px;
+    }
   </style>
   <script>
     function isLikelyWebView() {
@@ -16,29 +35,14 @@
       return isAndroidWebView && isNotDesktop;
     }
 
-    function copyUserAgent() {
-      const ua = navigator.userAgent;
-      navigator.clipboard.writeText(ua).then(() => {
-        alert("User-Agent berhasil disalin!");
-      }).catch(() => {
-        alert("Gagal menyalin User-Agent");
-      });
-    }
-
-    window.onload = function() {
+    window.onload = function () {
       if (isLikelyWebView()) {
-        // Redirect jika kemungkinan besar dari WebView (seperti Exambro)
-        window.location.href = "https://exam2.digimandiri.id";
+        window.location.href = "https://exam2.cbtdigimandiri.id/login";
       } else {
-        // Tampilkan pesan jika kemungkinan bukan WebView
-        const ua = navigator.userAgent;
         document.body.innerHTML = `
-          <h2>Akses Ditolak</h2>
-          <p>Silakan buka halaman ini melalui aplikasi ujian resmi.</p>
-          <p><strong>User-Agent Anda:</strong></p>
-          <code>${ua}</code>
-          <button onclick="copyUserAgent()">Salin User-Agent Anda</button>
-          <p>Kirim user-agent ini ke admin jika Anda merasa ini kesalahan.</p>
+          <h1>AKSES DITOLAK</h1>
+          <p>Kamu hanya bisa akses ujian menggunakan Aplikasi <strong>Examdam</strong> saja!<br>
+          Silakan hubungi admin jika ada kesulitan.</p>
         `;
       }
     };

@@ -3,23 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <title>Akses Ujian</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+    button {
+      margin-top: 1em;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    code {
+      background: #eee;
+      padding: 5px;
+      display: block;
+      margin-top: 10px;
+      word-break: break-all;
+    }
+  </style>
   <script>
-    // Fungsi untuk cek apakah user-agent berasal dari aplikasi Exambro
+    // Fungsi untuk mengecek apakah user menggunakan Exambro
     function isAllowedApp() {
       const ua = navigator.userAgent.toLowerCase();
-      return ua.includes("cbt-exam-browser");
+      return ua.includes("exambro-for-android");
+    }
+
+    // Fungsi untuk menyalin user-agent ke clipboard
+    function copyUserAgent() {
+      const uaText = navigator.userAgent;
+      navigator.clipboard.writeText(uaText).then(() => {
+        alert("User-Agent berhasil disalin!");
+      }).catch(err => {
+        alert("Gagal menyalin User-Agent: " + err);
+      });
     }
 
     window.onload = function() {
       if (isAllowedApp()) {
-        // Redirect ke halaman ujian jika user-agent cocok
+        // Redirect jika user-agent cocok
         window.location.href = "https://exam2.digimandiri.id";
       } else {
-        // Tampilkan pesan jika akses tidak sah
+        // Tampilkan pesan akses ditolak & tombol salin
+        const ua = navigator.userAgent;
         document.body.innerHTML = `
           <h2>Akses Ditolak</h2>
           <p>Silakan buka halaman ini melalui aplikasi resmi <strong>CBT Exam Browser (Exambro)</strong>.</p>
-          <p>User-Agent Anda: <code>${navigator.userAgent}</code></p>
+          <p>User-Agent Anda:</p>
+          <code id="userAgent">${ua}</code>
+          <button onclick="copyUserAgent()">Salin User-Agent Anda</button>
         `;
       }
     };

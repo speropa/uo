@@ -1,258 +1,173 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Akses Ujian</title>
-  <style>
-    /* Styling dasar untuk body */
-    body {
-      font-family: 'Inter', Arial, sans-serif; /* Menggunakan font Inter */
-      background-color: #f0f2f5; /* Warna latar belakang yang lebih lembut */
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh; /* Menggunakan min-height untuk fleksibilitas */
-      flex-direction: column;
-      text-align: center;
-      padding: 1em;
-      margin: 0; /* Menghilangkan margin default body */
-    }
-
-    /* Styling untuk judul utama */
-    h1 {
-      color: #dc2626; /* Warna merah yang lebih kuat */
-      font-size: 2.8em; /* Ukuran font lebih besar */
-      margin-bottom: 0.6em;
-      text-transform: uppercase;
-      letter-spacing: 1px; /* Sedikit jarak antar huruf */
-    }
-
-    /* Styling untuk paragraf teks */
-    p {
-      font-size: 1.1em; /* Ukuran font sedikit lebih kecil */
-      max-width: 600px; /* Lebar maksimum paragraf */
-      line-height: 1.6; /* Jarak antar baris */
-      margin-bottom: 1.5em;
-    }
-
-    /* Styling untuk kontainer form password */
-    .password-container {
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 12px; /* Sudut lebih membulat */
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Bayangan yang lebih menonjol */
-      width: 100%;
-      max-width: 400px; /* Lebar maksimum kontainer */
-      box-sizing: border-box; /* Memastikan padding termasuk dalam lebar */
-      margin-top: 20px;
-    }
-
-    /* Styling untuk label input */
-    .password-container label {
-      display: block;
-      margin-bottom: 12px;
-      font-weight: 600; /* Font lebih tebal */
-      color: #555;
-      font-size: 1.1em;
-    }
-
-    /* Styling untuk input password */
-    .password-container input[type="password"] {
-      width: calc(100% - 24px); /* Mengatur lebar input dengan memperhitungkan padding */
-      padding: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #cbd5e1; /* Border abu-abu yang lebih lembut */
-      border-radius: 8px; /* Sudut membulat */
-      font-size: 1em;
-      box-sizing: border-box; /* Memastikan padding termasuk dalam lebar */
-      transition: border-color 0.3s ease; /* Transisi halus saat fokus */
-    }
-
-    .password-container input[type="password"]:focus {
-      border-color: #3b82f6; /* Warna border saat fokus */
-      outline: none; /* Menghilangkan outline default */
-    }
-
-    /* Styling untuk tombol submit */
-    .password-container button {
-      background-color: #22c55e; /* Warna hijau yang cerah */
-      color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 8px; /* Sudut membulat */
-      cursor: pointer;
-      font-size: 1.1em;
-      font-weight: 600;
-      transition: background-color 0.3s ease, transform 0.2s ease; /* Transisi halus untuk hover */
-    }
-
-    .password-container button:hover {
-      background-color: #16a34a; /* Warna hijau lebih gelap saat hover */
-      transform: translateY(-2px); /* Efek sedikit naik saat hover */
-    }
-
-    /* Styling untuk pesan loading awal */
-    .loading-message {
-      font-size: 1.3em;
-      color: #6b7280;
-      animation: pulse 1.5s infinite; /* Animasi berdenyut */
-    }
-
-    /* Animasi berdenyut */
-    @keyframes pulse {
-      0% { opacity: 0.7; }
-      50% { opacity: 1; }
-      100% { opacity: 0.7; }
-    }
-
-    /* Styling untuk kotak pesan kustom (modal) */
-    .message-box {
-      display: none; /* Sembunyikan secara default */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Overlay transparan */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000; /* Pastikan di atas elemen lain */
-    }
-
-    .message-box-content {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      max-width: 350px;
-      text-align: center;
-      position: relative;
-    }
-
-    .message-box-content p {
-      margin-bottom: 20px;
-      font-size: 1.1em;
-      color: #333;
-    }
-
-    .message-box-content button {
-      background-color: #ef4444; /* Warna merah untuk tombol tutup */
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background-color 0.3s ease;
-    }
-
-    .message-box-content button:hover {
-      background-color: #dc2626;
-    }
-
-    /* Media queries untuk responsivitas */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2em;
-      }
-      p {
-        font-size: 1em;
-      }
-      .password-container {
-        padding: 20px;
-        max-width: 90%;
-      }
-      .password-container input[type="password"],
-      .password-container button {
-        font-size: 0.9em;
-        padding: 10px;
-      }
-    }
-  </style>
-  <script>
-    // Fungsi untuk mendeteksi apakah halaman dibuka di WebView Android
-    function isLikelyWebView() {
-      const ua = navigator.userAgent || "";
-      // Deteksi 'wv' di User Agent untuk Android WebView
-      const isAndroidWebView = ua.includes("wv") || ua.includes("; wv") || ua.includes("version/4.0");
-      // Pastikan bukan desktop (Windows/Mac) untuk mengurangi false positive
-      const isNotDesktop = !ua.includes("windows") && !ua.includes("macintosh");
-      return isAndroidWebView && isNotDesktop;
-    }
-
-    // Fungsi untuk menampilkan kotak pesan kustom
-    function showMessageBox(message) {
-      const messageBox = document.getElementById('messageBox');
-      const messageText = document.getElementById('messageText');
-      if (messageBox && messageText) {
-        messageText.textContent = message;
-        messageBox.style.display = 'flex'; // Tampilkan kotak pesan
-      }
-    }
-
-    // Fungsi untuk menyembunyikan kotak pesan kustom
-    function hideMessageBox() {
-      const messageBox = document.getElementById('messageBox');
-      if (messageBox) {
-        messageBox.style.display = 'none'; // Sembunyikan kotak pesan
-      }
-    }
-
-    // Fungsi untuk mengautentikasi password yang dimasukkan
-    function authenticatePassword() {
-      // GANTI PASSWORD INI DENGAN PASSWORD YANG ANDA INGINKAN
-      const correctPassword = "passwordrahasia"; // <-- GANTI INI!
-      const enteredPassword = document.getElementById("passwordInput").value;
-
-      // Log untuk debugging: Menampilkan password yang dimasukkan dan password yang benar
-      console.log("Password yang dimasukkan:", enteredPassword);
-      console.log("Password yang benar:", correctPassword);
-
-      if (enteredPassword === correctPassword) {
-        // Log untuk debugging: Konfirmasi bahwa password cocok
-        console.log("Password cocok. Mengarahkan ke URL...");
-        window.location.href = "https://smp2pajangan.github.io/customlink";
-      } else {
-        // Log untuk debugging: Konfirmasi bahwa password tidak cocok
-        console.log("Password tidak cocok.");
-        showMessageBox("Password salah. Silakan coba lagi.");
-        document.getElementById("passwordInput").value = ""; // Kosongkan input password
-      }
-    }
-
-    // Jalankan logika saat halaman selesai dimuat
-    window.onload = function () {
-      if (isLikelyWebView()) {
-        // Jika terdeteksi WebView, langsung arahkan ke URL
-        window.location.href = "https://smp2pajangan.github.io/customlink";
-      } else {
-        // Jika bukan WebView, tampilkan form password
-        document.body.innerHTML = `
-          <h1 class="text-red-600">AKSES TERBATAS</h1>
-          <p class="text-gray-700">Untuk mengakses ujian ini di browser, Anda memerlukan password. Jika Anda pengguna Aplikasi <strong>Examdam</strong>, silakan gunakan aplikasi tersebut.</p>
-          <div class="password-container">
-            <label for="passwordInput">Masukkan Password:</label>
-            <input type="password" id="passwordInput" placeholder="Password">
-            <button onclick="authenticatePassword()">Submit</button>
-          </div>
-
-          <!-- Kotak pesan kustom -->
-          <div id="messageBox" class="message-box" style="display: none;">
-            <div class="message-box-content">
-              <p id="messageText"></p>
-              <button onclick="hideMessageBox()">Tutup</button>
-            </div>
-          </div>
-        `;
-      }
-    };
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akses Terbatas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #e0f2f7; /* Warna latar belakang lembut */
+            text-align: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 90%;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #d32f2f; /* Merah untuk judul blokir */
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        p {
+            color: #555555;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        #unlock-section {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #unlock-input {
+            width: 80%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            font-size: 1em;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        #unlock-button {
+            background-color: #2196f3; /* Biru cerah untuk tombol */
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #unlock-button:hover {
+            background-color: #1976d2; /* Biru lebih gelap saat hover */
+        }
+        #error-message {
+            color: #f44336; /* Merah untuk pesan error */
+            margin-top: 10px;
+            font-size: 0.95em;
+            font-weight: bold;
+            display: none; /* Sembunyikan secara default */
+        }
+        .hidden {
+            display: none;
+        }
+        #redirect-message {
+            color: #388e3c; /* Hijau untuk pesan pengalihan */
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <!-- Pesan awal yang akan diganti setelah deteksi perangkat -->
-  <p class="loading-message">Memeriksa perangkat...</p>
+    <div class="container">
+        <div id="blocked-message" class="hidden">
+            <h1>AKSES DIBLOKIR</h1>
+            <p>Halaman ini hanya dapat diakses menggunakan Aplikasi resmi. Silakan hubungi Admin jika terdapat kendala.</p>
+
+            <div id="unlock-section">
+                <input type="password" id="unlock-input" placeholder="Masukkan kunci akses">
+                <button id="unlock-button">Buka Kunci</button>
+                <p id="error-message" class="hidden">Kunci yang dimasukkan salah. Silakan coba lagi.</p>
+            </div>
+        </div>
+
+        <div id="redirect-message" class="hidden">
+            <p>Mengarahkan Anda ke halaman...</p>
+        </div>
+    </div>
+
+    <script>
+        const targetUrl = 'https://smp2pajangan.github.io/customlink';
+        const validKey = 'ADMIN2025'; // Ganti dengan kunci yang Anda inginkan
+
+        function isWebView() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isAndroid = /android/.test(userAgent);
+            const isiOS = /(iphone|ipad|ipod)/.test(userAgent);
+
+            // Deteksi WebView di Android
+            if (isAndroid) {
+                if (userAgent.includes('wv') || (userAgent.includes('android') && !userAgent.includes('chrome') && !userAgent.includes('firefox'))) {
+                    return true;
+                }
+            }
+
+            // Deteksi WebView di iOS
+            if (isiOS) {
+                // Di iOS, 'safari' akan ada di UserAgent untuk browser Safari.
+                // Jika tidak ada 'safari', kemungkinan besar itu adalah WebView.
+                if (!userAgent.includes('safari') && (userAgent.includes('mobile') || userAgent.includes('ipad'))) {
+                    return true;
+                }
+            }
+
+            // Fallback untuk deteksi WebView umum
+            if (!userAgent.includes('chrome') && !userAgent.includes('firefox') && !userAgent.includes('safari') && !userAgent.includes('edge')) {
+                return true;
+            }
+
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const blockedMessage = document.getElementById('blocked-message');
+            const redirectMessage = document.getElementById('redirect-message');
+            const unlockInput = document.getElementById('unlock-input');
+            const unlockButton = document.getElementById('unlock-button');
+            const errorMessage = document.getElementById('error-message');
+
+            if (isWebView()) {
+                redirectMessage.classList.remove('hidden');
+                // Langsung arahkan ke URL target jika dideteksi sebagai WebView
+                window.location.href = targetUrl;
+            } else {
+                // Tampilkan pesan diblokir dan input kunci jika bukan WebView
+                blockedMessage.classList.remove('hidden');
+
+                unlockButton.addEventListener('click', function() {
+                    if (unlockInput.value === validKey) {
+                        errorMessage.classList.add('hidden'); // Sembunyikan pesan error jika sebelumnya muncul
+                        redirectMessage.classList.remove('hidden');
+                        blockedMessage.classList.add('hidden'); // Sembunyikan pesan blokir
+                        window.location.href = targetUrl; // Arahkan ke URL target
+                    } else {
+                        errorMessage.classList.remove('hidden'); // Tampilkan pesan error
+                    }
+                });
+
+                // Memungkinkan pengguna menekan Enter pada input
+                unlockInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        unlockButton.click(); // Simulasikan klik tombol
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

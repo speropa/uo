@@ -1,54 +1,138 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Akses Ujian</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      text-align: center;
-      padding: 1em;
-    }
-    h1 {
-      color: red;
-      font-size: 2.5em;
-      margin-bottom: 0.5em;
-      text-transform: uppercase;
-    }
-    p {
-      font-size: 1.2em;
-      max-width: 500px;
-    }
-  </style>
-  <script>
-    function isLikelyWebView() {
-      const ua = navigator.userAgent || "";
-      const isAndroidWebView = ua.includes("wv") || ua.includes("; wv") || ua.includes("version/4.0");
-      const isNotDesktop = !ua.includes("windows") && !ua.includes("macintosh");
-      return isAndroidWebView && isNotDesktop;
-    }
-
-    window.onload = function () {
-      if (isLikelyWebView()) {
-        window.location.href = "https://smp2pajangan.github.io/customlink/";
-      } else {
-        document.body.innerHTML = `
-          <h1>AKSES DITOLAK</h1>
-          <p>Kamu hanya bisa akses ujian menggunakan Aplikasi <strong>Examdam</strong> saja!<br>
-          Silakan hubungi admin jika ada kesulitan.</p>
-        `;
-      }
-    };
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilih Kelas - CBT Digimandiri</title>
+    <!-- Muat Tailwind CSS dari CDN. Tailwind secara inheren responsif. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Gaya kustom untuk sedikit lebih menarik */
+        body {
+            font-family: 'Inter', sans-serif; /* Menggunakan font Inter */
+            /* Pastikan body tidak memiliki padding atau margin yang mengganggu */
+            margin: 0;
+            padding: 0;
+            /* overflow akan diatur oleh JavaScript saat iframe dimuat */
+        }
+        .btn-custom {
+            /* Gaya dasar untuk tombol: padding, font, sudut membulat, bayangan, transisi */
+            /* Penggunaan @apply memastikan kelas Tailwind diterapkan, mendukung responsivitas */
+            @apply flex items-center justify-center space-x-3 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg 
+                   transition-all duration-300 ease-in-out transform 
+                   focus:outline-none focus:ring-4 focus:ring-offset-2;
+        }
+        .btn-grade7 {
+            /* Gaya untuk tombol Kelas 7: latar belakang merah solid, warna teks putih, status hover/fokus */
+            @apply bg-red-500 text-white 
+                   hover:bg-red-600 hover:shadow-lg hover:-translate-y-0.5 /* Efek hover lebih sederhana */
+                   focus:ring-red-300;
+        }
+        .btn-grade8 {
+            /* Gaya untuk tombol Kelas 8: latar belakang hijau solid, warna teks putih, status hover/fokus */
+            @apply bg-green-500 text-white 
+                   hover:bg-green-600 hover:shadow-lg hover:-translate-y-0.5 /* Efek hover lebih sederhana */
+                   focus:ring-green-300;
+        }
+        .icon-style {
+            /* Gaya untuk ikon di dalam tombol */
+            @apply w-6 h-6;
+        }
+        /* Gaya untuk kontainer iframe dan iframe agar menjadi fullscreen */
+        .iframe-container {
+            position: fixed; /* Menggunakan fixed agar menutupi seluruh viewport */
+            top: 0;
+            left: 0;
+            width: 100vw; /* Lebar penuh viewport */
+            height: 100vh; /* Tinggi penuh viewport */
+            margin: 0; /* Hapus margin */
+            padding: 0; /* Hapus padding */
+            border-radius: 0; /* Hapus sudut membulat */
+            box-shadow: none; /* Hapus bayangan */
+            overflow: hidden; /* Pastikan tidak ada scrollbar dari kontainer */
+            z-index: 9999; /* Pastikan iframe di atas elemen lain */
+        }
+        .iframe-container iframe {
+            width: 100%; /* Iframe mengisi seluruh kontainer */
+            height: 100%; /* Iframe mengisi seluruh kontainer */
+            border: 0; /* Hapus border */
+        }
+    </style>
 </head>
-<body>
-  <p>Memeriksa perangkat...</p>
+<body class="bg-gradient-to-br from-gray-100 to-slate-200 flex flex-col items-center justify-center min-h-screen p-6">
+
+    <div id="initialContent" class="bg-white p-8 sm:p-12 rounded-xl shadow-2xl w-full max-w-lg text-center">
+        <header class="mb-10">
+            <!-- Placeholder untuk logo jika tersedia -->
+            <!-- <img src="https://placehold.co/150x50/000000/FFFFFF?text=LOGO" alt="Logo CBT Digimandiri" class="mx-auto mb-6 h-12"> -->
+            <h1 class="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-900 mb-3">
+                Selamat Datang!
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-600">
+                Silakan pilih jenjang kelas Anda untuk melanjutkan ke halaman ujian.
+            </p>
+        </header>
+
+        <main class="flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-6 justify-center">
+            <!-- Tombol Kelas 7 -->
+            <button onclick="loadIframe('https://dam2.cbtdigimandiri.id')"
+                    class="btn-custom btn-grade7">
+                <!-- Ikon untuk Tombol Kelas 7 (Ikon Pengguna/Siswa) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18 22.5H6A1.875 1.875 0 0 1 4.501 20.118Z" />
+                </svg>
+                <span>Kelas 7</span>
+            </button>
+
+            <!-- Tombol Kelas 8 -->
+            <button onclick="loadIframe('https://exam2.cbtdigimandiri.id')"
+                    class="btn-custom btn-grade8">
+                <!-- Ikon untuk Tombol Kelas 8 (Ikon Topi Akademik) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-style">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.627 48.627 0 0 1 12 20.904a48.627 48.627 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.57 50.57 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.902 59.902 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                </svg>
+                <span>Kelas 8</span>
+            </button>
+        </main>
+    </div>
+
+    <!-- Kontainer Iframe -->
+    <div id="iframeContainer" class="iframe-container hidden">
+        <iframe id="contentFrame" src="" allowfullscreen></iframe>
+    </div>
+
+    <footer id="mainFooter" class="mt-12 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+        <p>Platform Ujian Terpercaya</p>
+    </footer>
+
+    <script>
+        /**
+         * Memuat URL yang diberikan ke dalam iframe dan menampilkan kontainer iframe secara fullscreen.
+         * Juga menyembunyikan div pemilihan kelas awal dan footer.
+         * @param {string} url - URL yang akan dimuat ke dalam iframe.
+         */
+        function loadIframe(url) {
+            const iframe = document.getElementById('contentFrame');
+            const iframeContainer = document.getElementById('iframeContainer');
+            const initialContent = document.getElementById('initialContent');
+            const mainFooter = document.getElementById('mainFooter');
+            
+            // Atur sumber iframe ke URL yang diberikan
+            iframe.src = url;
+            
+            // Hapus kelas 'hidden' untuk menampilkan kontainer iframe (fullscreen)
+            iframeContainer.classList.remove('hidden'); 
+            
+            // Tambahkan kelas 'hidden' ke div pemilihan kelas awal untuk menyembunyikannya
+            initialContent.classList.add('hidden');
+            
+            // Sembunyikan footer juga untuk tampilan fullscreen yang bersih
+            mainFooter.classList.add('hidden');
+
+            // Atur overflow: hidden; pada body hanya saat iframe dimuat
+            document.body.style.overflow = 'hidden'; 
+        }
+    </script>
+
 </body>
 </html>

@@ -1,148 +1,54 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilih Kelas - CBT Digimandiri</title>
-    <!-- Muat Tailwind CSS dari CDN. Tailwind secara inheren responsif. -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Gaya kustom untuk sedikit lebih menarik */
-        body {
-            font-family: 'Inter', sans-serif; /* Menggunakan font Inter */
-            /* Pastikan body tidak memiliki padding atau margin yang mengganggu */
-            margin: 0;
-            padding: 0;
-            /* overflow akan diatur oleh JavaScript saat iframe dimuat */
-        }
-        .btn-custom {
-            /* Gaya dasar untuk tombol: padding, font, sudut membulat, bayangan, transisi */
-            /* Padding lebih besar untuk bentuk yang lebih melengkung/pil */
-            @apply flex items-center justify-center px-16 py-8 text-2xl font-bold rounded-full shadow-2xl /* Padding dan ukuran font lebih besar */
-                   transition-all duration-300 ease-in-out transform 
-                   focus:outline-none focus:ring-4 focus:ring-offset-2;
-            /* Menambahkan gaya 3D/glossy */
-            border: 1px solid rgba(0, 0, 0, 0.2); /* Border sedikit lebih jelas */
-            position: relative; /* Untuk pseudo-element atau overlay */
-            overflow: hidden; /* Penting untuk efek glossy */
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.4); /* Bayangan teks untuk membuatnya lebih menonjol */
-        }
+  <meta charset="UTF-8">
+  <title>Akses Ujian</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      padding: 1em;
+    }
+    h1 {
+      color: red;
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+      text-transform: uppercase;
+    }
+    p {
+      font-size: 1.2em;
+      max-width: 500px;
+    }
+  </style>
+  <script>
+    function isLikelyWebView() {
+      const ua = navigator.userAgent || "";
+      const isAndroidWebView = ua.includes("wv") || ua.includes("; wv") || ua.includes("version/4.0");
+      const isNotDesktop = !ua.includes("windows") && !ua.includes("macintosh");
+      return isAndroidWebView && isNotDesktop;
+    }
 
-        /* Efek glossy overlay yang lebih halus */
-        .btn-custom::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 55%; /* Sedikit lebih rendah untuk efek glossy yang lebih halus */
-            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0)); /* Sedikit lebih transparan */
-            border-radius: 9999px; /* rounded-full */
-            z-index: 1;
-        }
-
-        .btn-grade7 {
-            /* Gaya untuk tombol Kelas 7: latar belakang gradien merah yang lebih profesional */
-            background: linear-gradient(to bottom, #ef4444, #b91c1c); /* Gradien merah yang lebih dalam */
-            color: white;
-            @apply hover:bg-red-700 hover:shadow-3xl hover:-translate-y-2 /* Efek hover lebih kuat dan profesional */
-                   focus:ring-red-500;
-        }
-        .btn-grade8 {
-            /* Gaya untuk tombol Kelas 8: latar belakang gradien hijau yang lebih profesional */
-            background: linear-gradient(to bottom, #22c55e, #15803d); /* Gradien hijau yang lebih dalam */
-            color: white;
-            @apply hover:bg-green-700 hover:shadow-3xl hover:-translate-y-2 /* Efek hover lebih kuat dan profesional */
-                   focus:ring-green-500;
-        }
-        
-        /* Gaya untuk kontainer iframe dan iframe agar menjadi fullscreen */
-        .iframe-container {
-            position: fixed; /* Menggunakan fixed agar menutupi seluruh viewport */
-            top: 0;
-            left: 0;
-            width: 100vw; /* Lebar penuh viewport */
-            height: 100vh; /* Tinggi penuh viewport */
-            margin: 0; /* Hapus margin */
-            padding: 0; /* Hapus padding */
-            border-radius: 0; /* Hapus sudut membulat */
-            box-shadow: none; /* Hapus bayangan */
-            overflow: hidden; /* Pastikan tidak ada scrollbar dari kontainer */
-            z-index: 9999; /* Pastikan iframe di atas elemen lain */
-        }
-        .iframe-container iframe {
-            width: 100%; /* Iframe mengisi seluruh kontainer */
-            height: 100%; /* Iframe mengisi seluruh kontainer */
-            border: 0; /* Hapus border */
-        }
-    </style>
+    window.onload = function () {
+      if (isLikelyWebView()) {
+        window.location.href = "https://smp2pajangan.github.io/customlink";
+      } else {
+        document.body.innerHTML = `
+          <h1>AKSES DITOLAK</h1>
+          <p>Kamu hanya bisa akses ujian menggunakan Aplikasi <strong>Examdam</strong> saja!<br>
+          Silakan hubungi admin jika ada kesulitan.</p>
+        `;
+      }
+    };
+  </script>
 </head>
-<body class="bg-gradient-to-br from-gray-100 to-slate-200 flex flex-col items-center justify-center min-h-screen p-6">
-
-    <div id="initialContent" class="bg-white p-8 sm:p-12 rounded-xl shadow-2xl w-full max-w-lg text-center">
-        <header class="mb-10">
-            <!-- Placeholder untuk logo jika tersedia -->
-            <!-- <img src="https://placehold.co/150x50/000000/FFFFFF?text=LOGO" alt="Logo CBT Digimandiri" class="mx-auto mb-6 h-12"> -->
-            <h1 class="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-900 mb-3">
-                Selamat Datang!
-            </h1>
-            <p class="text-lg sm:text-xl text-gray-600">
-                Silakan pilih jenjang kelas Anda untuk melanjutkan ke halaman ujian.
-            </p>
-        </header>
-
-        <main class="flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-6 justify-center">
-            <!-- Tombol Kelas 7 -->
-            <button onclick="loadIframe('https://dam2.cbtdigimandiri.id')"
-                    class="btn-custom btn-grade7">
-                <span>KELAS 7</span>
-            </button>
-
-            <!-- Tombol Kelas 8 -->
-            <button onclick="loadIframe('https://exam2.cbtdigimandiri.id')"
-                    class="btn-custom btn-grade8">
-                <span>KELAS 8</span>
-            </button>
-        </main>
-    </div>
-
-    <!-- Kontainer Iframe -->
-    <div id="iframeContainer" class="iframe-container hidden">
-        <iframe id="contentFrame" src="" allowfullscreen></iframe>
-    </div>
-
-    <footer id="mainFooter" class="mt-12 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
-        <p>Platform Ujian Terpercaya</p>
-    </footer>
-
-    <script>
-        /**
-         * Memuat URL yang diberikan ke dalam iframe dan menampilkan kontainer iframe secara fullscreen.
-         * Juga menyembunyikan div pemilihan kelas awal dan footer.
-         * @param {string} url - URL yang akan dimuat ke dalam iframe.
-         */
-        function loadIframe(url) {
-            const iframe = document.getElementById('contentFrame');
-            const iframeContainer = document.getElementById('iframeContainer');
-            const initialContent = document.getElementById('initialContent');
-            const mainFooter = document.getElementById('mainFooter');
-            
-            // Atur sumber iframe ke URL yang diberikan
-            iframe.src = url;
-            
-            // Hapus kelas 'hidden' untuk menampilkan kontainer iframe (fullscreen)
-            iframeContainer.classList.remove('hidden'); 
-            
-            // Tambahkan kelas 'hidden' ke div pemilihan kelas awal untuk menyembunyikannya
-            initialContent.classList.add('hidden');
-            
-            // Sembunyikan footer juga untuk tampilan fullscreen yang bersih
-            mainFooter.classList.add('hidden');
-
-            // Atur overflow: hidden; pada body hanya saat iframe dimuat
-            document.body.style.overflow = 'hidden'; 
-        }
-    </script>
-
+<body>
+  <p>Memeriksa perangkat...</p>
 </body>
 </html>

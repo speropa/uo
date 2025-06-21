@@ -87,7 +87,7 @@
     <div class="container">
         <div id="blocked-message" class="hidden">
             <h1>AKSES DIBLOKIR</h1>
-            <p>Halaman ini hanya dapat diakses menggunakan Aplikasi resmi. Silakan hubungi Admin jika terdapat kendala.</p>
+            <p>Halaman ini hanya dapat diakses menggunakan Aplikasi resmi atau Safe Exam Browser. Silakan hubungi Admin jika terdapat kendala.</p>
 
             <div id="unlock-section">
                 <input type="password" id="unlock-input" placeholder="Masukkan kunci akses">
@@ -105,10 +105,12 @@
         const targetUrl = 'https://smp2pajangan.github.io/customlink';
         const validKey = 'ADMIN2025'; // Ganti dengan kunci yang Anda inginkan
 
-        function isWebView() {
+        // Fungsi untuk mendeteksi apakah lingkungan yang diizinkan (WebView atau Safe Exam Browser)
+        function isAllowedEnvironment() {
             const userAgent = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(userAgent);
             const isiOS = /(iphone|ipad|ipod)/.test(userAgent);
+            const isSafeExamBrowser = userAgent.includes('safeexambrowser'); // Deteksi Safe Exam Browser
 
             // Deteksi WebView di Android
             if (isAndroid) {
@@ -126,7 +128,12 @@
                 }
             }
 
-            // Fallback untuk deteksi WebView umum
+            // Deteksi Safe Exam Browser
+            if (isSafeExamBrowser) {
+                return true;
+            }
+
+            // Fallback untuk deteksi WebView umum (jika bukan browser umum)
             if (!userAgent.includes('chrome') && !userAgent.includes('firefox') && !userAgent.includes('safari') && !userAgent.includes('edge')) {
                 return true;
             }
@@ -141,12 +148,12 @@
             const unlockButton = document.getElementById('unlock-button');
             const errorMessage = document.getElementById('error-message');
 
-            if (isWebView()) {
+            if (isAllowedEnvironment()) {
                 redirectMessage.classList.remove('hidden');
-                // Langsung arahkan ke URL target jika dideteksi sebagai WebView
+                // Langsung arahkan ke URL target jika dideteksi sebagai lingkungan yang diizinkan
                 window.location.href = targetUrl;
             } else {
-                // Tampilkan pesan diblokir dan input kunci jika bukan WebView
+                // Tampilkan pesan diblokir dan input kunci jika bukan lingkungan yang diizinkan
                 blockedMessage.classList.remove('hidden');
 
                 unlockButton.addEventListener('click', function() {

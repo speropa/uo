@@ -73,6 +73,12 @@
             font-weight: bold;
             display: none; /* Sembunyikan secara default */
         }
+        #user-agent-display { /* Gaya untuk menampilkan User-Agent */
+            color: #777777;
+            font-size: 0.85em;
+            margin-top: 20px;
+            word-break: break-all; /* Agar teks panjang tidak melebihi batas */
+        }
         .hidden {
             display: none;
         }
@@ -94,6 +100,7 @@
                 <button id="unlock-button">Buka Kunci</button>
                 <p id="error-message" class="hidden">Kunci yang dimasukkan salah. Silakan coba lagi.</p>
             </div>
+            <p id="user-agent-display"></p> <!-- Elemen untuk menampilkan User-Agent -->
         </div>
 
         <div id="redirect-message" class="hidden">
@@ -110,7 +117,9 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(userAgent);
             const isiOS = /(iphone|ipad|ipod)/.test(userAgent);
-            const isSafeExamBrowser = userAgent.includes('safeexambrowser'); // Deteksi Safe Exam Browser
+            // Tambahkan deteksi Safe Exam Browser di sini. Untuk debugging, kita akan menampilkan User-Agent.
+            // Contoh deteksi umum untuk SEB, mungkin perlu disesuaikan:
+            const isSafeExamBrowser = userAgent.includes('safeexambrowser') || userAgent.includes('seb-windows') || userAgent.includes('seb-mac');
 
             // Deteksi WebView di Android
             if (isAndroid) {
@@ -121,8 +130,6 @@
 
             // Deteksi WebView di iOS
             if (isiOS) {
-                // Di iOS, 'safari' akan ada di UserAgent untuk browser Safari.
-                // Jika tidak ada 'safari', kemungkinan besar itu adalah WebView.
                 if (!userAgent.includes('safari') && (userAgent.includes('mobile') || userAgent.includes('ipad'))) {
                     return true;
                 }
@@ -147,6 +154,7 @@
             const unlockInput = document.getElementById('unlock-input');
             const unlockButton = document.getElementById('unlock-button');
             const errorMessage = document.getElementById('error-message');
+            const userAgentDisplay = document.getElementById('user-agent-display'); // Dapatkan elemen untuk menampilkan User-Agent
 
             if (isAllowedEnvironment()) {
                 redirectMessage.classList.remove('hidden');
@@ -155,6 +163,8 @@
             } else {
                 // Tampilkan pesan diblokir dan input kunci jika bukan lingkungan yang diizinkan
                 blockedMessage.classList.remove('hidden');
+                // Tampilkan User-Agent saat akses diblokir
+                userAgentDisplay.textContent = 'User-Agent Anda: ' + navigator.userAgent;
 
                 unlockButton.addEventListener('click', function() {
                     if (unlockInput.value === validKey) {
